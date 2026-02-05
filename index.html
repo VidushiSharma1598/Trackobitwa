@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Dancing Script', cursive;
+      text-align: center;
+      color: #ff1a75;
+      overflow: hidden;
+      background: url('Map.jpeg') no-repeat center;
+      background-size: 400px 340px;
+      background-position: center 70%;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #ff1a75;
+      text-shadow: 0 0 10px #ff66a3, 0 0 20px #ff99cc;
+      animation: glow 2s infinite alternate;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff66a3; }
+      to { text-shadow: 0 0 20px #ff99cc; }
+    }
+
+    button {
+      background: white;
+      border: 2px solid #ff1a75;
+      border-radius: 10px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      margin: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #ff1a75;
+      position: relative;
+      z-index: 1;
+    }
+
+    button:hover {
+      background: #ff1a75;
+      color: white;
+    }
+
+    #car {
+      position: absolute;
+      top: 27%; left: 50%;
+      font-size: 2.5em;
+      z-index: 2;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 2em;
+      animation: floatUp 4s ease forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 10;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .popup-content {
+      background: white;
+      color: #ff1a75;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      width: 300px;
+      margin: 20% auto;
+      box-shadow: 0 0 20px #ff66a3;
+      animation: scaleUp 0.4s ease forwards;
+    }
+
+    .popup-content button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: 2px solid #ff1a75;
+      border-radius: 10px;
+      background: white;
+      color: #ff1a75;
+      cursor: pointer;
+    }
+
+    .popup-content button:hover {
+      background: #ff1a75;
+      color: white;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+  </style>
+</head>
+<body>
+  <h1>Will you be my Valentine?</h1>
+<!-- 🎶 Background music --> <audio id="bgMusic" autoplay loop> <source src="Heatwaves.mp3" type="audio/mpeg"> </audio>
+
+  <button onclick="travelYes()">Yes</button>
+  <button onclick="travelNo()">No</button>
+  <div id="car">🚗</div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <p>Giving you a chance to reconsider! ❤️</p>
+      <button onclick="loveYou()">You Love me</button>
+      <button onclick="reconsider()">Reconsider</button>
+      <button onclick="closePopup()">No</button>
+    </div>
+  </div>
+<script>
+    let carLoopAnimation = null;
+
+    function travelYes() {
+      if (carLoopAnimation) carLoopAnimation.cancel();
+      moveCarToSector46();
+      spawnHearts();
+      setTimeout(() => { moveCarToFinalDestination(); spawnHearts(); }, 3000);
+    }
+
+
+    function travelNo() {
+      const car = document.getElementById('car');
+      carLoopAnimation = car.animate([
+        { top: "27%", left: "50%" },
+        { top: "29%", left: "55%" },
+        { top: "31%", left: "50%" },
+        { top: "29%", left: "45%" },
+        { top: "27%", left: "50%" }
+      ], { duration: 2000, iterations: Infinity });
+      document.getElementById("popup").style.display = "block";
+    }
+
+    function loveYou() {
+      if (carLoopAnimation) carLoopAnimation.cancel();
+      moveCarToSector46();
+      spawnHearts();
+      setTimeout(() => { moveCarToFinalDestination(); spawnHearts(); }, 3000);
+      alert("Hushh! You just saved your chance to see me in red ❤️");
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function reconsider() { alert("I hope you don't want me to go check the return policy on my feelings!"); document.getElementById("popup").style.display = "none"; }
+    function closePopup() { alert("I love that you think this is a democracy, It's actually a very cute dictatorship and I've already signed the decree.😉"); document.getElementById("popup").style.display = "none"; }
+
+    function moveCarToSector46() {
+      const car = document.getElementById('car');
+      const animation = car.animate([
+        { top: car.style.top || "27%", left: car.style.left || "50%" },
+        { top: "80%", left: "47%" }
+      ], { duration: 2000, fill: "forwards" });
+      animation.onfinish = () => { car.style.top = "80%"; car.style.left = "47%"; };
+    }
+
+    function moveCarToFinalDestination() {
+      const car = document.getElementById('car');
+      const animation = car.animate([
+        { top: car.style.top, left: car.style.left },
+        { top: "70%", left: "36%" }
+      ], { duration: 2000, fill: "forwards" });
+      animation.onfinish = () => {
+        car.style.top = "70%"; car.style.left = "36%";
+        flashKisses();
+        showValentineMessage();
+      };
+    }
+
+    function spawnHearts() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.top = "80%";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+    }
+
+    function flashKisses() {
+      for (let i = 0; i < 30; i++) {
+        const kiss = document.createElement("div");
+        kiss.innerText = "💋";
+        kiss.style.position = "absolute";
+        kiss.style.left = Math.random() * 100 + "%";
+        kiss.style.top = Math.random() * 100 + "%";
+        kiss.style.fontSize = "2em";
+        kiss.style.animation = "fadeOut 2s ease forwards";
+        kiss.style.zIndex = "99";
+        document.body.appendChild(kiss);
+        setTimeout(() => kiss.remove(), 2000);
+      }
+    }
+
+    function showValentineMessage() {
+      const msg = document.createElement("div");
+      msg.innerText = "I knew you were a person of excellent taste, I Love You❤️";
+      msg.style.position = "fixed";
+      msg.style.top = "50%";
+      msg.style.left = "50%";
+      msg.style.transform = "translate(-50%, -50%)";
+      msg.style.fontSize = "3em";
+      msg.style.color = "#800080";
+      msg.style.textShadow = "0 0 20px #DA70D6, 0 0 40px #ff99cc";
+      msg.style.zIndex = "100";
+      msg.style.animation = "fadeOut 15s ease forwards";
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 5000);
+    }
+document.addEventListener("click", () => { const music = document.getElementById("bgMusic"); if (music.paused) { music.play(); } });
+  </script>
+</body>
+</html>
